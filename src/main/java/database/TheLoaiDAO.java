@@ -1,25 +1,57 @@
 package database;
 
+import model.Sanpham;
+import model.TacGia;
 import model.TheLoai;
+import utils.DBUtils;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TheLoaiDAO implements DAOInterface<TheLoai>{
     private ArrayList<TheLoai> data = new ArrayList<TheLoai>();
 
+    private final Connection con = DBUtils.getConnection();
+
     @Override
     public ArrayList<TheLoai> selectAll() {
-        return this.data;
+        ArrayList<TheLoai> data = new ArrayList<TheLoai>();
+        try {
+            String sql = "SELECT * FROM theloai";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String maTheLoai = rs.getString("maTheLoai");
+                String tenTheLoai = rs.getString("tenTheLoai");
+                TheLoai theLoai = new TheLoai(maTheLoai, tenTheLoai);
+                data.add(theLoai);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 
     @Override
     public TheLoai selectById(TheLoai t) {
-        for(TheLoai theLoai : data){
-            if (data.equals(t)){
-                return theLoai;
+        TheLoai data = null;
+        try {
+            String sql = "SELECT * FROM theloai WHERE maTheLoai = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, t.getMaTheLoai());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String maTheLoai = rs.getString("maTheLoai");
+                String tenTheLoai = rs.getString("tenTheLoai");
+                data = new TheLoai(maTheLoai, tenTheLoai);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return null;
+        return data;
     }
 
     @Override

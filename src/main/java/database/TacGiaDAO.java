@@ -11,7 +11,6 @@ import java.util.Date;
 
 public class TacGiaDAO implements DAOInterface<TacGia> {
     private final Connection con = DBUtils.getConnection();
-
     @Override
     public ArrayList<TacGia> selectAll() {
         ArrayList<TacGia> data = new ArrayList<TacGia>();
@@ -30,7 +29,6 @@ public class TacGiaDAO implements DAOInterface<TacGia> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-
         }
         return data;
     }
@@ -61,8 +59,22 @@ public class TacGiaDAO implements DAOInterface<TacGia> {
 
     @Override
     public int insert(TacGia tacGia) {
-        return 0;
+        int ketQua = 0;
+        try{
+            String sql = "INSERT INTO tacgia(maTacGia, hoVaTen, ngaySinh, tieuSu) VALUES(?, ?, ?, ?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, tacGia.getMaTacGia());
+            ps.setString(2, tacGia.getHoVaTen());
+            ps.setDate(3, new java.sql.Date(tacGia.getNgaySinh().getTime()));
+            ps.setString(4, tacGia.getTieuSu());
+            ketQua = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ketQua;
     }
+
+
 
     @Override
     public int insertAll(ArrayList<TacGia> arr) {
@@ -75,8 +87,19 @@ public class TacGiaDAO implements DAOInterface<TacGia> {
 
     @Override
     public int delete(TacGia tacGia) {
-        return 0;
+        int count  =0 ;
+        try{
+            String sql = "DELETE FROM tacgia WHERE maTacGia = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, tacGia.getMaTacGia());
+            count = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
     }
+
+
 
     @Override
     public int deleteAll(ArrayList<TacGia> t) {
@@ -89,9 +112,21 @@ public class TacGiaDAO implements DAOInterface<TacGia> {
 
     @Override
     public int update(TacGia tacGia) {
-
-        return 0;
+        int count  =0 ;
+        try{
+            String sql = "UPDATE tacgia SET hoVaTen = ?, ngaySinh = ?, tieuSu = ? WHERE maTacGia = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, tacGia.getHoVaTen());
+            ps.setDate(2, new java.sql.Date(tacGia.getNgaySinh().getTime()));
+            ps.setString(3, tacGia.getTieuSu());
+            ps.setString(4, tacGia.getMaTacGia());
+            count = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
     }
+
 }
 
 
