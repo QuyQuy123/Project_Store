@@ -48,14 +48,12 @@ public class TacGiaDAO implements DAOInterface<TacGia> {
                 data = new TacGia(maTacGia, tenTacGia, ngaySinh , tieuSu);
                 break;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
 
         }
         return data;
     }
-
 
     @Override
     public int insert(TacGia tacGia) {
@@ -73,8 +71,6 @@ public class TacGiaDAO implements DAOInterface<TacGia> {
         }
         return ketQua;
     }
-
-
 
     @Override
     public int insertAll(ArrayList<TacGia> arr) {

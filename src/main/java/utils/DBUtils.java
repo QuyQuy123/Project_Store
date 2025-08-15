@@ -15,7 +15,7 @@ public class DBUtils {
     public static Connection getConnection() {
         if (connection == null) {
             try {
-                Class.forName(DRIVER); // Register Driver
+                Class.forName(DRIVER); // RegisterController Driver
                 connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
             } catch (ClassNotFoundException e) {
                 System.out.println("Driver not found!");
